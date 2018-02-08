@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
-import { Tracker } from 'meteor/tracker';
 
 import Signup from '../ui/Signup';
 import Link from '../ui/Link';
@@ -13,8 +12,7 @@ export const browserHistory = require('history').createBrowserHistory();
 const unauthenticatedPages = ['/', '/signup'];
 const authenticatedPages = ['/links'];
 
-Tracker.autorun(() => {
-  const isAuthenticated = !!Meteor.userId();
+export const onAuthChange = (isAuthenticated) => {
   const pathname = browserHistory.location.pathname;
   const isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
   const isAuthenticatedPage = authenticatedPages.includes(pathname);
@@ -24,9 +22,7 @@ Tracker.autorun(() => {
   } else if(!isAuthenticated && isAuthenticatedPage){
     browserHistory.replace('/')
   }
-
-  console.log('isAuthenticated', isAuthenticated);
-});
+};
 
 const onEnterPublicPage = () => {
   if(Meteor.userId()){
@@ -40,7 +36,7 @@ const onEnterPrivatePage = () => {
   }
 }
 
-export const AppRouter = () => (
+export const AppRouter = (
   <Router history={browserHistory}>
       <Switch>
         <Route exact path="/" component={() => <Login onEnter={onEnterPublicPage} />} />

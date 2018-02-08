@@ -1,30 +1,20 @@
 import React from 'react';
-import { Accounts } from 'meteor/accounts-base';
+import { Meteor } from 'meteor/meteor';
 
-export default class Link extends React.Component {
+import  LinksList from './LinksList';
+import  PrivateHeader from './PrivateHeader';
+import  AddLink from './AddLink';
+import  LinksListFilters from './LinksListFilters';
 
-  constructor(props) {
-      super(props);
-      this.state = {
-        error: ''
-      };
-  }
-
-  componentWillMount(){
-    this.props.onEnter();
-  }
-
-  onLogout(){
-    Accounts.logout();
-  }
-
-  render() {
-    return (
-      <div>
-        <h1>Links</h1>
-
-        <button onClick={this.onLogout.bind(this)}>Logout</button>
+export default () => {
+  return (
+    <div>
+      <PrivateHeader title="Short Links"/>
+      <div className="page-content">
+        <LinksListFilters/>
+        <AddLink/>
+        <LinksList/>
       </div>
-    );
-  }
+    </div>
+  );
 }
